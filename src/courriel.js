@@ -56,13 +56,19 @@ function loadRecepients(toSearch=''){
             }
         }
         const currList = document.getElementById("userBox").children;
-        for (let i = 0; i < currList.length; i++) {
-            if (currRecipient == currList[i].innerHTML) {
-                loadMessages(currList[i].innerHTML);
-                return;
+        if (currList.length >0){
+            for (let i = 0; i < currList.length; i++) {
+                if (currRecipient == currList[i].innerHTML) {
+                    loadMessages(currList[i].innerHTML);
+                    return;
+                }
             }
+            loadMessages(currList[0].innerHTML);
         }
-        loadMessages(currList[0].innerHTML);
+        else {
+            alert("No result found!");
+        }
+
     }
 }
 
