@@ -5,6 +5,10 @@ let currRecipient = '';
 
 // Event handlers
 document.getElementsByTagName("body")[0].onload = function() {setup()};
+document.getElementById("btnSearch").onclick = function() {loadRecepients(document.querySelector('#searchBar').value)};
+document.getElementById("btnReset").onclick = function() {loadRecepients()};
+document.getElementById("btnSearch2").onclick = function() {loadMessages(currRecipient,document.querySelector('#searchBar2').value)};
+document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient)};
 document.getElementById("btnSend").onclick = function() {sendMessage()};
 document.getElementById("btnAdd").onclick = function() {addRecepient()};
 textBar.addEventListener("keyup", function(event) {
@@ -37,14 +41,24 @@ function setup() {
 /*
     Recipient code
 */
-function loadRecepients(){
+
+function loadRecepients(toSearch=''){
     clearChildren(document.getElementById("userBox"));
     let storedNames = parseData("names");
     if(storedNames){
         for (let i = 0; i < storedNames.length; i++) {
-            formatRecipient(storedNames[i]);
+            if(storedNames[i].includes(toSearch) || toSearch===''){
+                formatRecipient(storedNames[i]);
+            }
         }
-        loadMessages(storedNames[0]);
+        const currList = document.getElementById("userBox").children;
+        for (let i = 0; i < currList.length; i++) {
+            if (currRecipient == currList[i].innerHTML) {
+                loadMessages(currList[i].innerHTML);
+                return;
+            }
+        }
+        loadMessages(currList[0].innerHTML);
     }
 }
 
@@ -81,7 +95,7 @@ function formatRecipient(toFormat){
     Message code
 */
 
-function loadMessages(name){
+function loadMessages(name,toSearch=''){
     currRecipient = name;
     clearChildren(document.getElementById("chatBox"));
     let users = document.getElementById("userBox").children;
@@ -95,15 +109,16 @@ function loadMessages(name){
     if(messages){
         for (let i = 0; i < messages.length; i++) {
             const element = messages[i].split('\0');
-            formatMessage(parseInt(element[0]),element[1]);
+            if(element[1].includes(toSearch)||toSearch=='')
+                formatMessage(parseInt(element[0]),element[1]);
         }
     }
 }
 
 function sendMessage() {
     if ((textBar.value != '' && currRecipient != '')) {
-        console.log(textBar.value);
-        console.log(currRecipient);
+        /*console.log(textBar.value);
+        console.log(currRecipient);*/
         // send to recepient (TO-DO) maybe add a check for reception
         let date = new Date();
         //Presentation
@@ -176,7 +191,3 @@ function parseData(key){
     }
     return data;
 }
-
-
-
-

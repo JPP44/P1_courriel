@@ -7,15 +7,28 @@
     </head>
     <body>
         <h1 style="text-align: center;">FakeMail</h1>
-        <div style="align-items: center; background-color: darkorange;">
-            <p>Navbar</p>
-        </div>
         <div>
             <div class="inline" style="width: 10%; background-color:deeppink; ">
-                <p>control panel</p>
+                Control panel
+            </div>
+            <div class="inline" style="width: 30%; background-color:crimson; ">
+                Recipients:
+                <input type="text" id="searchBar" name="searchRecipent">
+                <button id="btnSearch">Search</button>
+                <button id="btnReset">Reset</button>
+            </div>
+            <div class="inline" style="width: 60%; background-color:darkblue; ">
+                Messages:
+                <input type="text" id="searchBar2" name="searchMessage">
+                <button id="btnSearch2">Search</button>
+                <button id="btnReset2">Reset</button>
+            </div>
+        </div>
+        <div>
+            <div class="inline panel" style="width: 10%; background-color:deeppink; ">
                 <button id="btnAdd">Add name</button>
             </div>
-            <div class="inline" style="width: 30%;background-color: crimson;">
+            <div class="inline panel" style="width: 30%;background-color: crimson;">
                 <div id="userBox" class="scrollContainer" style="height: 100%;">
                     <!-- Test recepients
                     <li class="userli" style=>List of mail goes here.dfghhgfdsdfghgfdfghjhgfdsdfgh</li>
@@ -23,7 +36,8 @@
                     -->
                 </div>
             </div>
-            <div class="inline" style="width: 60%; background-color: darkblue;">
+            <div class="inline panel" style="width: 60%; background-color: darkblue;">
+                
                 <div id="chatBox" class="scrollContainer" style="height: 95%;">
                     <!-- Test messages
                     <p class="otherMessage">Name|Date <br>Text box goes here. </p>
@@ -34,7 +48,7 @@
                 </div>
                 <div class="bottomBar">
                     <input class="textBar" type="text" id="textBar" name="text" size="80%">
-                    <button ond id="btnSend">Send</button>
+                    <button id="btnSend">Send</button>
                 </div>
             </div>
         </div>

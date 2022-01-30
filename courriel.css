@@ -1,6 +1,9 @@
 .inline {
     position: relative;
     float: left; 
+}
+
+.panel{
     height: 30em;
 }
 
