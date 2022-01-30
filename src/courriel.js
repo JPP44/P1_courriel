@@ -6,9 +6,13 @@ let currRecipient = '';
 // Event handlers
 document.getElementsByTagName("body")[0].onload = function() {setup()};
 document.getElementById("btnSearch").onclick = function() {loadRecepients(document.querySelector('#searchBar').value)};
-document.getElementById("btnReset").onclick = function() {loadRecepients()};
+document.getElementById("btnReset").onclick = function() {loadRecepients();
+                                                          document.querySelector('#searchBar').value='';
+                                                        };
 document.getElementById("btnSearch2").onclick = function() {loadMessages(currRecipient,document.querySelector('#searchBar2').value)};
-document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient)};
+document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient);
+                                                           document.querySelector('#searchBar2').value='';
+                                                        };
 document.getElementById("btnSend").onclick = function() {sendMessage()};
 document.getElementById("btnAdd").onclick = function() {addRecepient()};
 textBar.addEventListener("keyup", function(event) {
@@ -121,8 +125,11 @@ function sendMessage() {
         console.log(currRecipient);*/
         // send to recepient (TO-DO) maybe add a check for reception
         let date = new Date();
+        console.log(date.getDay());
+        date.get
+        console.log(date.getUTCDay());
         //Presentation
-        let msg = myName +' | '+ date.getDay().toString() + '/' +  date.getMonth().toString() + '/' + date.getFullYear().toString() +" "+
+        let msg = myName +' | '+ date.getDate().toString() + '/' +  (date.getMonth()+1).toString() + '/' + date.getFullYear().toString() +" "+
         date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString() + "<br>" + textBar.value;
         msg = msg.replace(/\0/g,'');
         formatMessage(0,msg);
