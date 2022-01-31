@@ -13,6 +13,16 @@
     bottom: 0;
     left: 0;
 }
+.textBar {
+    width: 90%;
+    height: 1em;
+    resize:none;    
+}
+.searchBar {
+    width: 45%;
+    height: 1em;
+    resize:none; 
+}
 
 .myMessage {
     margin-left: auto;
@@ -26,10 +36,12 @@
 }
 
 .otherMessage,.myMessage {
-    display: table;
+    display: list-item;
     word-break: break-all;
     border-radius: 0.2em;
     max-width: 100%;
+    caret-color: transparent;
+    resize:none;    
 }
 
 .userli {
