@@ -169,7 +169,7 @@ function sendMessage() {
 
 function formatTime(time){
     let retVal = time;
-    while(time.length < 2){
+    while(retVal.length < 2){
         retVal = '0'+retVal ;
     }
     return retVal;
