@@ -31,15 +31,20 @@ textBar.addEventListener("keyup", function(event) {
             }
         }
     }
+    if (event.key === "Backspace"){
+        let newHeight = textBar.value.split('\n').length ;
+        newHeight = newHeight > 1 ? newHeight : 1 ;
+        textBar.style.height = newHeight.toString() + "em" ;
+    }
 }); 
-textBar.addEventListener("keydown",function(event) {
+/*textBar.addEventListener("keydown",function(event) {
     // Check if the backspace key is pressed in the field
     if (event.key === "Backspace"){
         let newHeight = textBar.value.split('\n').length ;
         newHeight = newHeight > 1 ? newHeight : 1 ;
         textBar.style.height = newHeight.toString() + "em" ;
     }
-});
+});*/
 document.getElementById("btnAdd").onclick = function() {addRecepient()};
 document.getElementById("btnSend").onclick = function() {
                                                             textBar.style.height = "1em";
