@@ -13,14 +13,38 @@ document.getElementById("btnSearch2").onclick = function() {loadMessages(currRec
 document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient);
                                                            document.querySelector('#searchBar2').value='';
                                                         };
-document.getElementById("btnSend").onclick = function() {sendMessage()};
-document.getElementById("btnAdd").onclick = function() {addRecepient()};
 textBar.addEventListener("keyup", function(event) {
-    // Check if the enter key is pressed in th field
-    if (event.key === "Enter") {
-      sendMessage();
+    // Check if the enter key is pressed in the field
+    if (event.key === "Enter"){
+        if(event.shiftKey){
+            textBar.style.height = "1em";
+            sendMessage();
+        }
+        else{
+            if(textBar.style.height===''){
+                textBar.style.height = "2em";
+            }
+            else {
+                let newHeight = parseInt(textBar.style.height[0])+1 ;
+                newHeight = newHeight < 4 ? newHeight : 4 ;
+                textBar.style.height = newHeight.toString() + "em" ;
+            }
+        }
     }
 }); 
+textBar.addEventListener("keydown",function(event) {
+    // Check if the backspace key is pressed in the field
+    if (event.key === "Backspace"){
+        let newHeight = textBar.value.split('\n').length ;
+        newHeight = newHeight > 1 ? newHeight : 1 ;
+        textBar.style.height = newHeight.toString() + "em" ;
+    }
+});
+document.getElementById("btnAdd").onclick = function() {addRecepient()};
+document.getElementById("btnSend").onclick = function() {
+                                                            textBar.style.height = "1em";
+                                                            sendMessage();
+                                                        };
 
 // functions
 function setup() {
@@ -127,16 +151,11 @@ function loadMessages(name,toSearch=''){
 
 function sendMessage() {
     if ((textBar.value != '' && currRecipient != '')) {
-        /*console.log(textBar.value);
-        console.log(currRecipient);*/
         // send to recepient (TO-DO) maybe add a check for reception
         let date = new Date();
-        console.log(date.getDay());
-        date.get
-        console.log(date.getUTCDay());
         //Presentation
         let msg = myName +' | '+ date.getDate().toString() + '/' +  (date.getMonth()+1).toString() + '/' + date.getFullYear().toString() +" "+
-        date.getHours().toString() + ':' + date.getMinutes().toString() + ':' + date.getSeconds().toString() + "<br>" + textBar.value;
+                  formatTime(date.getHours().toString()) + ':' + formatTime(date.getMinutes().toString()) + ':' + formatTime(date.getSeconds().toString()) + "\n" + textBar.value;
         msg = msg.replace(/\0/g,'');
         formatMessage(0,msg);
         textBar.value = '';
@@ -146,6 +165,14 @@ function sendMessage() {
     /*else {
         alert("Nothing was written!");
     }*/
+}
+
+function formatTime(time){
+    let retVal = time;
+    while(time.length < 2){
+        retVal = '0'+retVal ;
+    }
+    return retVal;
 }
 
 function receiveMessage() {
@@ -158,12 +185,21 @@ function receiveMessage() {
     saveMessage(0,recMsg,recUser);
 }
 
-
 function formatMessage(msgType,msgData) {
-    let newElement = document.createElement("p");
+    let newElement = document.createElement("textarea");
     const types = ["myMessage","otherMessage"];
     newElement.className = types[msgType];
-    newElement.innerHTML = msgData;
+    let array = msgData.split('\n');
+    let width = 0;
+    for (let i = 0; i < array.length; i++) {
+        width = (array[i].length > width) ? array[i].length : width ;
+    }
+    newElement.setAttribute("cols",(width).toString());
+    newElement.setAttribute("rows",(array.length-1).toString());
+    newElement.addEventListener("keypress", function(event) {
+        event.preventDefault();
+    });
+    newElement.value = msgData;
     document.getElementById("chatBox").appendChild(newElement);
 }
 
@@ -186,7 +222,6 @@ function saveRecipient(toSave){
 }
 
 function savetoArray(name,data){
-    
     let saveArray = parseData(name);
     if(!saveArray) saveArray = new Array;
     saveArray.push(data);
