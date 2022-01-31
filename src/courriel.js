@@ -21,20 +21,11 @@ textBar.addEventListener("keyup", function(event) {
             sendMessage();
         }
         else{
-            if(textBar.style.height===''){
-                textBar.style.height = "2em";
-            }
-            else {
-                let newHeight = parseInt(textBar.style.height[0])+1 ;
-                newHeight = newHeight < 4 ? newHeight : 4 ;
-                textBar.style.height = newHeight.toString() + "em" ;
-            }
+            resizeTextBar();
         }
     }
     if (event.key === "Backspace"){
-        let newHeight = textBar.value.split('\n').length ;
-        newHeight = newHeight > 1 ? newHeight : 1 ;
-        textBar.style.height = newHeight.toString() + "em" ;
+        resizeTextBar();
     }
 });
 document.getElementById("btnAdd").onclick = function() {addRecepient()};
@@ -61,6 +52,12 @@ function setup() {
             localStorage.setItem('myName',myName);
         }
     }
+}
+
+function resizeTextBar(){
+    let newHeight = textBar.value.split('\n').length ;
+    newHeight = newHeight < 4 ? newHeight : 4 ;
+    textBar.style.height = newHeight.toString() + "em" ;
 }
 
 /*
