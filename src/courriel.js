@@ -13,25 +13,32 @@ document.getElementById("btnSearch2").onclick = function() {loadMessages(currRec
 document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient);
                                                            document.querySelector('#searchBar2').value='';
                                                         };
-textBar.addEventListener("keyup", function(event) {
+                                                        document.getElementById("btnSearch2").onclick = function() {loadMessages(currRecipient,document.querySelector('#searchBar2').value)};
+document.getElementById("btnEdit").onclick = function() {editRecepient(currRecipient);};
+document.getElementById("btnDel").onclick = function() {deleteRecipient(currRecipient);};
+textBar.addEventListener("keydown", function(event) {
     // Check if the enter key is pressed in the field
     if (event.key === "Enter"){
         if(event.shiftKey){
-            textBar.style.height = "1em";
+            event.preventDefault();
             sendMessage();
+            textBar.style.height = "1em";
         }
         else{
             resizeTextBar();
         }
     }
+});
+textBar.addEventListener("keyup", function(event) {
+    // Check if the backspece key was released in the field
     if (event.key === "Backspace"){
         resizeTextBar();
     }
 });
 document.getElementById("btnAdd").onclick = function() {addRecepient()};
 document.getElementById("btnSend").onclick = function() {
-                                                            textBar.style.height = "1em";
                                                             sendMessage();
+                                                            textBar.style.height = "1em";
                                                         };
 
 // functions
@@ -76,12 +83,12 @@ function loadRecepients(toSearch=''){
         const currList = document.getElementById("userBox").children;
         if (currList.length >0){
             for (let i = 0; i < currList.length; i++) {
-                if (currRecipient == currList[i].innerHTML) {
-                    loadMessages(currList[i].innerHTML);
+                if (currRecipient == currList[i].textContent) {
+                    loadMessages(currList[i].textContent);
                     return;
                 }
             }
-            loadMessages(currList[0].innerHTML);
+            loadMessages(currList[0].textContent);
         }
         else {
             alert("No result found!");
@@ -105,6 +112,24 @@ function addRecepient() {
     }
 }
 
+function editRecepient(toEdit) {
+    let newName = prompt("Enter new name for "+toEdit+" :","name");
+    if (newName == null || newName == "") {
+        if(!confirm("No name was entered.\nDo want to cancel?")) {
+            editRecepient();
+        }
+    }
+    else {
+        let editArray = getArray("names");
+        editArray.splice(editArray.indexOf(toEdit),1,newName);
+        localStorage.setItem("names",JSON.stringify(editArray));
+        localStorage.setItem(newName,localStorage.getItem(toEdit));
+        localStorage.removeItem(toEdit);
+        currRecipient = newName ;
+        loadRecepients();
+    }
+}
+
 function clearChildren(parent){
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
@@ -115,7 +140,7 @@ function formatRecipient(toFormat){
     let newElement = document.createElement("li");
     newElement.className = "userli";
     newElement.setAttribute("onclick",'loadMessages("'+toFormat+'")');
-    newElement.innerHTML = toFormat;
+    newElement.textContent = toFormat;
     document.getElementById("userBox").appendChild(newElement);
 }
 
@@ -128,7 +153,7 @@ function loadMessages(name,toSearch=''){
     clearChildren(document.getElementById("chatBox"));
     let users = document.getElementById("userBox").children;
     for (let i = 0; i < users.length; i++) {
-        if(users[i].innerHTML == name) 
+        if(users[i].textContent == name)
             users[i].setAttribute("style","background-color: blue");
         else
             users[i].setAttribute("style","background-color: initial");
@@ -201,7 +226,7 @@ function formatMessage(msgType,msgData) {
     Save code
     localStorage 
     All the chats will follow this convention
-    names matches 1:1 with ips for position for message reception
+    names matches 1:1 with address keys for position for message reception
     chat name of recepient will contain the entire history using the null(\0) character to seperate eachEntry 
     Entry formatting typeMessage\0Msg\0 next
     Save as JSON
@@ -215,11 +240,24 @@ function saveRecipient(toSave){
     savetoArray("names",toSave);
 }
 
+function deleteRecipient(toDel){
+    let deleteArray = getArray("names");
+    deleteArray.splice(deleteArray.indexOf(toDel),1);
+    localStorage.setItem("names",JSON.stringify(deleteArray));
+    localStorage.removeItem(toDel);
+    loadRecepients();
+}
+
 function savetoArray(name,data){
-    let saveArray = parseData(name);
-    if(!saveArray) saveArray = new Array;
+    let saveArray = getArray(name);
     saveArray.push(data);
     localStorage.setItem(name,JSON.stringify(saveArray));
+}
+
+function getArray(name) {
+    let saveArray = parseData(name);
+    if(!saveArray) saveArray = new Array;
+    return saveArray;
 }
 
 function parseData(key){
