@@ -6,10 +6,18 @@ let currRecipient = '';
 // Event handlers
 document.getElementsByTagName("body")[0].onload = function() {setup()};
 document.getElementById("btnSearch").onclick = function() {loadRecepients(document.querySelector('#searchBar').value)};
+document.querySelector('#searchBar').addEventListener("keydown", function(event) { 
+                                                            if (event.key === "Enter")
+                                                                event.preventDefault();
+                                                        });
 document.getElementById("btnReset").onclick = function() {loadRecepients();
                                                           document.querySelector('#searchBar').value='';
                                                         };
 document.getElementById("btnSearch2").onclick = function() {loadMessages(currRecipient,document.querySelector('#searchBar2').value)};
+document.querySelector('#searchBar2').addEventListener("keydown", function(event) { 
+                                                            if (event.key === "Enter")
+                                                                event.preventDefault();
+                                                        });
 document.getElementById("btnReset2").onclick = function() {loadMessages(currRecipient);
                                                            document.querySelector('#searchBar2').value='';
                                                         };
